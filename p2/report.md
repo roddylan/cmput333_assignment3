@@ -216,7 +216,7 @@ bash run_exploit.sh 9
 SECRET CMPUT 333 Group 09 reached
 ```
 
-Exit status: 0 (clean exit, no crash, no signal).
+Exit status: 16 (non-zero but clean — no crash, no signal. exit() is called with rdi still pointing to the group string, resulting in a non-zero status).
 
 ---
 
@@ -230,9 +230,9 @@ Exit status: 0 (clean exit, no crash, no signal).
 | `find_base.py` | Helper to verify the PIE base address via GDB |
 | `report.md` | This report |
 | `cmput333_group9_bof.txt` | Full terminal session captured with the `script` command |
-| `screenshot_1_pie_base.png` | GDB `info proc mappings` confirming PIE base `0x555555554000` |
-| `screenshot_2_exit_addr.png` | GDB `print (void*)exit` confirming `exit() = 0x7ffff7c47ba0` |
-| `screenshot_3_exploit_run.png` | Exploit run showing `SECRET CMPUT 333 Group 09 reached` |
+| `1.png` | GDB `info proc mappings` confirming PIE base `0x555555554000` |
+| `2.png` | GDB `print (void*)exit` confirming `exit() = 0x7ffff7c47ba0` |
+| `3.png` | Exploit run showing `SECRET CMPUT 333 Group 09 reached` |
 
 ---
 
@@ -245,15 +245,14 @@ The file `cmput333_group9_bof.txt` contains the full terminal session recorded w
 - Binary inspection (`file ./vulnprog`)
 - PIE base verification via GDB (`info proc mappings`)
 - `exit()` address confirmation via GDB (`print (void*)exit`)
-- All 23 secret function addresses printed by `find_base.py`
 - The exploit run with the expected output
 
 ### Screenshots
 
 All screenshots are watermarked with date/time and Group 9.
 
-**screenshot_1_pie_base.png** — GDB `info proc mappings` output confirming the binary loads at `0x555555554000` with ASLR disabled.
+**1.png** — GDB `info proc mappings` output confirming the binary loads at `0x555555554000` with ASLR disabled.
 
-**screenshot_2_exit_addr.png** — GDB `print (void*)exit` output confirming `exit()` is at `0x7ffff7c47ba0` in libc on Ubuntu 24.04.
+**2.png** — GDB `print (void*)exit` output confirming `exit()` is at `0x7ffff7c47ba0` in libc on Ubuntu 24.04.
 
-**screenshot_3_exploit_run.png** — The exploit being run with `python3 exploit.py | ./vulnprog`, showing the program output including `SECRET CMPUT 333 Group 09 reached` and a clean exit.
+**3.png** — The exploit being run with `python3 exploit.py | ./vulnprog`, showing the program output including `SECRET CMPUT 333 Group 09 reached` and a clean exit.
