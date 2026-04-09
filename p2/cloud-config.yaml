@@ -1,0 +1,14 @@
+#cloud-config
+packages:
+  - build-essential
+  - gcc
+  - cmake
+  - git
+  - openssl
+  - libssl-dev
+  - python3
+  - python3-pip
+  - tar
+
+runcmd:
+  - echo 0 > /proc/sys/kernel/randomize_va_space

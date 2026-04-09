@@ -195,7 +195,7 @@ Total: 88 bytes, well within fgets' 127-byte limit.
 ### Setup (one time, as root)
 
 ```bash
-bash setup_vm.sh
+sudo bash setup_vm.sh
 ```
 
 ### Run
