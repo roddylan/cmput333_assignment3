@@ -1,6 +1,8 @@
 # Running the Buffer Overflow Exploit
 **CMPUT 333 Assignment 3 — Group 9**
 
+> [!NOTE]
+> THIS EXPLOIT SCRIPT USES THE X86 VERSION OF THE PROGRAM
 ---
 
 ## Prerequisites
@@ -11,9 +13,9 @@
 ---
 
 ## Step 1 — Create the VM
-
+(in p2 folder)
 ```bash
-multipass launch --name bof-vuln --cpus 2 --mem 4G --disk 12G
+multipass launch --name bof-vuln --cpus 2 --mem 4G --disk 12G --cloud-init cloud-config.yaml
 ```
 
 ## Step 2 — Transfer files into the VM

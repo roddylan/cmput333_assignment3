@@ -5,7 +5,7 @@
 
 ## 1. What the Program Does
 
-`vulnprog` is a stripped x86-64 ELF PIE binary that implements a simple "Note Taker" application. On startup it prints a message acknowledging 23 hidden secret functions, then presents a menu:
+`vulnprog` is a stripped **x86-64** ELF PIE binary that implements a simple "Note Taker" application. On startup it prints a message acknowledging 23 hidden secret functions, then presents a menu:
 
 ```
 === Note Taker ===
