@@ -6,7 +6,7 @@ packages:
   - git
   - openssl
   - libssl-dev
-  - python3
+  - python3-full
   - python3-pip
   - tar
 
