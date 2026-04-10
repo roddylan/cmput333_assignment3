@@ -72,9 +72,9 @@ gdb -batch -ex 'starti' -ex 'info proc mappings' ./vulnprog
 # Look for: 0x555555554000  vulnprog
 ```
 
-Confirm exit() address:
+Confirm exit@plt address (used by the exploit):
 ```bash
-gdb -batch -ex 'break main' -ex 'run' -ex 'print (void*)exit' ./vulnprog
-# Then type: 4  (to quit the program)
-# Look for: 0x7ffff7c47ba0
+objdump -d ./vulnprog | grep '<exit@plt>:'
+# Look for a line like:  1030 <exit@plt>:
+# exit@plt VA = 0x555555554000 + 0x1030
 ```
