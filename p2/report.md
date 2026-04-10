@@ -236,8 +236,6 @@ Exit status: 16 (non-zero but clean — no crash, no signal. exit() is called wi
 | `setup_vm.sh` | One-time environment setup (ASLR disable, package install) |
 | `cloud-config.yaml` | Multipass cloud-init config — installs packages and disables ASLR on VM launch |
 | `README.md` | Step-by-step instructions to recreate the exploit from a clean VM |
-| `requirements.txt` | Python package list (pwntools and dependencies) |
-| `exploit_pwntools.py` | Alternative pwntools-based exploit (same payload, different framework) |
 | `find_base.py` | Helper to verify the PIE base address via GDB |
 | `report.md` | This report |
 | `cmput333_group9_bof.txt` | Full terminal session captured with the `script` command |
